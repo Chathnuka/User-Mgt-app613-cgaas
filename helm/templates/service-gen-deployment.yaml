@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: User-Mgt
+  labels:
+    app: User-Mgt
+spec:
+  selector:
+    matchLabels:
+      app: User-Mgt
+  replicas:  1
+  template:
+    metadata:
+      labels:
+        app: User-Mgt
+    spec:
+      containers:
+       - name: User-Mgt
+         image: evolza/User-Mgt:latest
+         imagePullPolicy: Always
+         ports:
+          - containerPort: 8080
+            name: rest
+      imagePullSecrets:
+          - name: notavailable

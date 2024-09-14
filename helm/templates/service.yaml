@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: User-Mgtsrv
+    service: User-Mgtsrv
+  name: User-Mgtsrv
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  selector:
+    app: User-Mgt

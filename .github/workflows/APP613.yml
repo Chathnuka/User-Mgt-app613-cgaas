@@ -1,0 +1,48 @@
+name: user-mgt-app613
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Build & Push Docker Image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: ${{ secrets.CGAAS_DOCKER_USERNAME }}/user-mgt-app613
+          tags: latest
+          registry: docker.io
+          username: ${{ secrets.CGAAS_DOCKER_USERNAME }}
+          password: ${{ secrets.CGAAS_DOCKER_ACCESSCODE }}
+
+      - name: SSH to remote VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.HOST_PASSWORD }}
+          script: |
+            export SERVER_NAME="${{ secrets.BE_URL}}"
+            export SOURCE_PORT="7014"
+            export TARGET_PORT="8888"
+            export SERVICE_NAME="user-mgt-app613"
+            export DOCKER_USER_NAME="evolza"
+            export REPO_NAME="user-mgt-app613"
+            cd /root/
+            ls
+            bash ./HostScript.sh
+
+
+
+
+
+
+
+
+
